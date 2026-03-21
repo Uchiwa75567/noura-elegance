@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingBag, Menu, X, Search } from "lucide-react";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
 
@@ -14,8 +14,26 @@ const navLinks = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const { totalItems } = useCart();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get("q") ?? "";
+    if (location.pathname === "/recherche") {
+      setSearchValue(query);
+    }
+  }, [location.pathname, location.search]);
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const trimmed = searchValue.trim();
+    if (!trimmed) return;
+    navigate(`/recherche?q=${encodeURIComponent(trimmed)}`);
+    setMobileOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -47,8 +65,19 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Right: Secondary nav + Cart (desktop) */}
-        <nav className="hidden md:flex items-center gap-8 ml-auto">
+        {/* Right: Search + Secondary nav + Cart (desktop) */}
+        <nav className="hidden md:flex items-center gap-6 ml-auto">
+          <form className="relative" onSubmit={handleSearchSubmit}>
+            <Search className="w-4 h-4 text-foreground/60 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="search"
+              placeholder="Rechercher..."
+              aria-label="Rechercher"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              className="h-9 w-44 lg:w-56 rounded-full border border-border/60 bg-background/60 pl-9 pr-3 text-sm font-sans tracking-wide text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+          </form>
           {navLinks.slice(3).map((link) => (
             <Link
               key={link.to}
@@ -85,6 +114,17 @@ const Header = () => {
       {mobileOpen && (
         <div className="md:hidden border-t border-border/50 bg-background">
           <nav className="container flex flex-col py-6 gap-4">
+            <form className="relative" onSubmit={handleSearchSubmit}>
+              <Search className="w-4 h-4 text-foreground/60 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="search"
+                placeholder="Rechercher..."
+                aria-label="Rechercher"
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+                className="h-10 w-full rounded-full border border-border/60 bg-background/60 pl-9 pr-3 text-sm font-sans tracking-wide text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
+            </form>
             {navLinks.map((link) => (
               <Link
                 key={link.to}
