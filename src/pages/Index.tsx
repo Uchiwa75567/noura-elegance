@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShoppingBag, Star } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
-import collectionVeiled from "@/assets/collection-veiled.jpg";
-import collectionModern from "@/assets/collection-modern.jpg";
-import collectionMen from "@/assets/collection-men.jpg";
+import collectionVeiled from "@/assets/femme_moderne_voile.jpg";
+import collectionModern from "@/assets/femme_moderne_vide.jpg";
+import collectionMen from "@/assets/homme_moderne.jpg";
+import homeProduct2Image from "@/assets/col-veiled-hero.jpg";
+import homeProduct4Image from "@/assets/echarpe.jpg";
 import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
@@ -44,6 +46,11 @@ const collections = [
   { img: collectionMen, name: "Hommes", desc: "L'homme élégant et moderne" },
 ];
 
+const featuredProductImages: Record<string, string> = {
+  "2": homeProduct2Image,
+  "4": homeProduct4Image,
+};
+
 const reviews = [
   {
     name: "AMINA K.",
@@ -80,7 +87,10 @@ const StarRating = ({ count = 5, filled = 4 }: { count?: number; filled?: number
 
 const Index = () => {
   const { addItem } = useCart();
-  const featuredProducts = products.slice(0, 4);
+  const featuredProducts = products.slice(0, 4).map((product) => ({
+    ...product,
+    image: featuredProductImages[product.id] ?? product.image,
+  }));
 
   return (
     <div>
