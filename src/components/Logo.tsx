@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 
 const Logo = () => (
-  <Link to="/" className="flex flex-col items-center gap-1 group">
-    <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
-      <span className="text-background font-serif text-xl leading-none">N</span>
-    </div>
-    <span className="font-serif tracking-[0.2em] text-[10px] font-medium uppercase">Noura</span>
+  <Link to="/" className="flex-shrink-0 group">
+    <img
+      src="/logo-noura.png"
+      alt="NOURA"
+      className="h-10 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+    />
   </Link>
 );
 

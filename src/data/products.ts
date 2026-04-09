@@ -20,7 +20,7 @@ export const products: Product[] = [
   {
     id: "1",
     name: "Hijab Premium en Soie",
-    price: 49,
+    price: 2000,
     image: product1,
     category: "Hijabs",
     collection: "femmes-voilees",
@@ -32,7 +32,7 @@ export const products: Product[] = [
   {
     id: "2",
     name: "Robe Longue Sauge",
-    price: 129,
+    price: 30000,
     image: product2,
     category: "Robes",
     collection: "femmes-modernes",
@@ -44,7 +44,7 @@ export const products: Product[] = [
   {
     id: "3",
     name: "Blazer Structuré Camel",
-    price: 189,
+    price: 5000,
     image: product3,
     category: "Vestes",
     collection: "femmes-modernes",

@@ -1,14 +1,14 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ShoppingBag, Menu, X, Search } from "lucide-react";
+import { ShoppingBag, Menu, X, Search, User } from "lucide-react";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { to: "/", label: "Accueil" },
+  { to: "/a-propos", label: "À Propos" },
   { to: "/boutique", label: "Boutique" },
   { to: "/collections", label: "Collections" },
-  { to: "/a-propos", label: "À Propos" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -36,12 +36,12 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="relative flex items-center h-16 md:h-20 px-6 lg:px-10">
-        {/* Left: Mobile menu button + Logo */}
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-50 bg-[#cb997e] backdrop-blur-sm">
+      <div className="relative flex items-center h-[81px] px-6 lg:px-16">
+        {/* Left: Logo */}
+        <div className="flex items-center gap-3 min-w-0">
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-white"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
           >
@@ -52,12 +52,12 @@ const Header = () => {
 
         {/* Center: Main nav (desktop) */}
         <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          {navLinks.slice(0, 3).map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              className={`text-xs tracking-widest uppercase font-sans transition-colors duration-300 hover:text-primary ${
-                location.pathname === link.to ? "text-primary" : "text-foreground/70"
+              className={`text-[13px] tracking-[1.2px] uppercase font-sans font-bold transition-colors duration-200 hover:text-black/60 whitespace-nowrap ${
+                location.pathname === link.to ? "text-black" : "text-white"
               }`}
             >
               {link.label}
@@ -65,45 +65,57 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Right: Search + Secondary nav + Cart (desktop) */}
-        <nav className="hidden md:flex items-center gap-6 ml-auto">
+        {/* Right: Search + User + Cart (desktop) */}
+        <div className="ml-auto hidden md:flex items-center gap-5">
           <form className="relative" onSubmit={handleSearchSubmit}>
-            <Search className="w-4 h-4 text-foreground/60 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="search"
               placeholder="Rechercher..."
               aria-label="Rechercher"
               value={searchValue}
-              onChange={(event) => setSearchValue(event.target.value)}
-              className="h-9 w-44 lg:w-56 rounded-full border border-border/60 bg-background/60 pl-9 pr-3 text-sm font-sans tracking-wide text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="h-9 w-56 rounded-full border border-[rgba(224,217,209,0.60)] bg-[rgba(250,248,245,0.60)] pl-4 pr-10 text-sm font-dm text-foreground/80 placeholder:text-[rgba(26,26,26,0.50)] focus:outline-none focus:ring-1 focus:ring-white/40"
             />
-          </form>
-          {navLinks.slice(3).map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`text-xs tracking-widest uppercase font-sans transition-colors duration-300 hover:text-primary ${
-                location.pathname === link.to ? "text-primary" : "text-foreground/70"
-              }`}
+            <button
+              type="submit"
+              aria-label="Rechercher"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/70"
             >
-              {link.label}
-            </Link>
-          ))}
-          <Link to="/panier" className="relative p-2 hover:text-primary transition-colors">
+              <Search className="w-4 h-4" />
+            </button>
+          </form>
+
+          <Link
+            to="/compte"
+            aria-label="Mon compte"
+            className="text-white hover:text-black/60 transition-colors"
+          >
+            <User className="w-5 h-5" strokeWidth={1.5} />
+          </Link>
+
+          <Link
+            to="/panier"
+            aria-label="Panier"
+            className="relative text-white hover:text-black/60 transition-colors"
+          >
             <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
             {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] rounded-full flex items-center justify-center font-sans">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-foreground text-background text-[9px] rounded-full flex items-center justify-center font-sans font-bold">
                 {totalItems}
               </span>
             )}
           </Link>
-        </nav>
+        </div>
 
-        {/* Mobile cart */}
-        <Link to="/panier" className="md:hidden ml-auto relative p-2 hover:text-primary transition-colors">
+        {/* Mobile: cart only */}
+        <Link
+          to="/panier"
+          aria-label="Panier"
+          className="md:hidden ml-auto relative text-white p-2"
+        >
           <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
           {totalItems > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] rounded-full flex items-center justify-center font-sans">
+            <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-foreground text-background text-[9px] rounded-full flex items-center justify-center font-sans font-bold">
               {totalItems}
             </span>
           )}
@@ -112,26 +124,28 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-border/50 bg-background">
-          <nav className="container flex flex-col py-6 gap-4">
+        <div className="md:hidden border-t border-white/20 bg-[#cb997e]">
+          <nav className="flex flex-col px-6 py-6 gap-5">
             <form className="relative" onSubmit={handleSearchSubmit}>
-              <Search className="w-4 h-4 text-foreground/60 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="search"
                 placeholder="Rechercher..."
                 aria-label="Rechercher"
                 value={searchValue}
-                onChange={(event) => setSearchValue(event.target.value)}
-                className="h-10 w-full rounded-full border border-border/60 bg-background/60 pl-9 pr-3 text-sm font-sans tracking-wide text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="h-10 w-full rounded-full border border-white/30 bg-white/20 pl-4 pr-10 text-sm font-dm text-white placeholder:text-white/60 focus:outline-none"
               />
+              <button type="submit" aria-label="Rechercher" className="absolute right-3 top-1/2 -translate-y-1/2">
+                <Search className="w-4 h-4 text-white" />
+              </button>
             </form>
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
                 onClick={() => setMobileOpen(false)}
-                className={`text-sm tracking-widest uppercase font-sans transition-colors py-2 ${
-                  location.pathname === link.to ? "text-primary" : "text-foreground/70"
+                className={`text-sm tracking-widest uppercase font-sans font-bold py-1 transition-colors ${
+                  location.pathname === link.to ? "text-black" : "text-white"
                 }`}
               >
                 {link.label}

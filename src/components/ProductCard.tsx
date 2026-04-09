@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ShoppingBag, Star } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { Product } from "@/data/products";
 
@@ -17,7 +18,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="group"
     >
-      <div className="relative aspect-[3/4] overflow-hidden rounded-sm mb-4 bg-muted">
+      {/* Image */}
+      <div
+        className="relative aspect-[3/4] overflow-hidden rounded-sm mb-3"
+        style={{ backgroundColor: "#efeae7" }}
+      >
         <img
           src={product.image}
           alt={product.name}
@@ -25,21 +30,48 @@ const ProductCard = ({ product }: ProductCardProps) => {
           loading="lazy"
         />
         {product.isNew && (
-          <span className="absolute top-3 left-3 bg-accent/20 text-accent-foreground px-3 py-1 text-[10px] uppercase tracking-widest font-sans font-medium backdrop-blur-sm">
+          <span
+            className="absolute top-3 left-3 text-white text-[9px] uppercase tracking-widest font-sans font-medium px-3 py-1"
+            style={{ backgroundColor: "rgba(165,165,141,0.85)" }}
+          >
             Nouveau
           </span>
         )}
-        <motion.button
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => addItem(product)}
-          className="absolute bottom-0 left-0 right-0 bg-foreground/90 text-background py-3.5 text-xs tracking-widest uppercase font-sans font-medium translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out text-center backdrop-blur-sm"
-        >
-          Ajouter au panier
-        </motion.button>
       </div>
-      <h3 className="font-serif text-lg font-light tracking-tight">{product.name}</h3>
-      <p className="font-sans text-sm text-muted-foreground tabular-nums mt-1">{product.price},00 €</p>
+
+      {/* Product name */}
+      <h3
+        className="font-serif font-light tracking-[-0.45px] text-foreground leading-tight mb-1"
+        style={{ fontSize: "18px" }}
+      >
+        {product.name}
+      </h3>
+
+      {/* Price + Cart button */}
+      <div className="flex items-center justify-between">
+        <p className="font-sans text-[14px] text-[#666666] leading-5">
+          {product.price.toLocaleString("fr-FR")} FCFA
+        </p>
+        <button
+          onClick={() => addItem(product)}
+          aria-label={`Ajouter ${product.name} au panier`}
+          className="w-10 h-10 rounded-full border border-border/60 bg-white/80 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 flex-shrink-0"
+        >
+          <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
+        </button>
+      </div>
+
+      {/* Star rating - 4/5 */}
+      <div className="flex gap-0.5 mt-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star
+            key={i}
+            className={`w-3 h-3 ${
+              i < 4 ? "fill-primary text-primary" : "fill-foreground text-foreground"
+            }`}
+          />
+        ))}
+      </div>
     </motion.div>
   );
 };
