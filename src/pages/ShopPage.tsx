@@ -1,8 +1,15 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { products } from "@/data/products";
+import { products, type Product } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { Link } from "react-router-dom";
+import echarpeImage from "@/assets/echarpe.jpg";
+import colVeiledHeroImage from "@/assets/col-veiled-hero.jpg";
+import colVeiledAbayaNoireImage from "@/assets/col-veiled-abaya-noire.jpg";
+import colModernBlazerCamelImage from "@/assets/col-modern-blazer-camel.jpg";
+import hommeModerneImage from "@/assets/homme_moderne.jpg";
+import voileBlancImage from "@/assets/voile_blanc.jpg";
+import cinqColleImage from "@/assets/cinq_colle.jpg";
 
 const categories = ["Tout", "Hijabs", "Robes", "Vestes", "Pantalons", "Accessoires", "Abayas", "Chemises", "Costumes"];
 const sortOptions = [
@@ -12,12 +19,40 @@ const sortOptions = [
   { value: "name", label: "Nom A-Z" },
 ];
 
+const shopProductImages: Record<string, string> = {
+  "1": echarpeImage,
+  "2": colVeiledHeroImage,
+  "4": colVeiledAbayaNoireImage,
+  "5": colModernBlazerCamelImage,
+  "6": hommeModerneImage,
+  "8": voileBlancImage,
+};
+
+const shopProducts: Product[] = [
+  ...products.map((product) => ({
+    ...product,
+    image: shopProductImages[product.id] ?? product.image,
+  })),
+  {
+    id: "9",
+    name: "Hijab Pashmina premium",
+    price: 3000,
+    image: cinqColleImage,
+    category: "Hijabs",
+    collection: "femmes-voilees",
+    isNew: true,
+    sizes: ["Unique"],
+    colors: ["Beige", "Sable", "Terracotta"],
+    description: "Un hijab pashmina doux et léger, avec un tombé élégant pour le quotidien.",
+  },
+];
+
 const ShopPage = () => {
   const [activeCategory, setActiveCategory] = useState("Tout");
   const [sortBy, setSortBy] = useState("default");
 
   const filtered = useMemo(() => {
-    let result = activeCategory === "Tout" ? products : products.filter((p) => p.category === activeCategory);
+    let result = activeCategory === "Tout" ? shopProducts : shopProducts.filter((p) => p.category === activeCategory);
     if (sortBy === "price-asc") result = [...result].sort((a, b) => a.price - b.price);
     else if (sortBy === "price-desc") result = [...result].sort((a, b) => b.price - a.price);
     else if (sortBy === "name") result = [...result].sort((a, b) => a.name.localeCompare(b.name));
