@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Logo from "./Logo";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ const Footer = () => {
       <div className="container pt-16 pb-8">
         {/* Centered Logo */}
         <div className="flex justify-center mb-12">
-          <img src="/logo-noura.png" alt="NOURA" className="h-16 w-auto object-contain brightness-0 invert" />
+          <Logo className="h-16 w-auto object-contain" linkClassName="flex-shrink-0" />
         </div>
 
         {/* 4-column grid */}
@@ -77,9 +78,17 @@ const Footer = () => {
               Contact
             </h4>
             <ul className="space-y-3">
-              {["contact@noura.com", "+221 77 698 91 48", "Dakar, Sénégal"].map((item) => (
-                <li key={item} className="text-[13px] text-white/80 font-sans">
-                  {item}
+              {[
+                { label: "Email", value: "nourabyaysha@gmail.com" },
+                { label: "Téléphone", value: "+221 77 698 91 48" },
+                { label: "Adresse", value: "Dakar, Sénégal" },
+                { label: "Horaires", value: "Lun - Ven : 09h-20h\nSam : 10h-19h" },
+              ].map((item) => (
+                <li key={item.label} className="text-[13px] text-white/80 font-sans">
+                  <span className="block text-[11px] uppercase tracking-[1px] text-white/60 mb-0.5">
+                    {item.label}
+                  </span>
+                  <span className="whitespace-pre-line">{item.value}</span>
                 </li>
               ))}
             </ul>

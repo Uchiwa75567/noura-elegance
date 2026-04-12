@@ -2,6 +2,7 @@ import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
 import product4 from "@/assets/product-4.jpg";
+import colMenJalaba from "@/assets/col-men-jalaba.jpg";
 
 export interface Product {
   id: string;
@@ -79,7 +80,7 @@ export const products: Product[] = [
     id: "6",
     name: "Chemise Lin Homme",
     price: 89,
-    image: product3,
+    image: colMenJalaba,
     category: "Chemises",
     collection: "hommes",
     sizes: ["S", "M", "L", "XL", "XXL"],

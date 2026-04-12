@@ -1,15 +1,29 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import collectionVeiled from "@/assets/collection-veiled.jpg";
-import collectionModern from "@/assets/collection-modern.jpg";
-import collectionMen from "@/assets/collection-men.jpg";
+import heroImage from "@/assets/hero-image.jpg";
+import collectionVeiledHero from "@/assets/col-veiled-abaya-noire.jpg";
+import collectionModernHero from "@/assets/collection-veiled.jpg";
+import collectionMenHero from "@/assets/yereolof.jpg";
+import modernBlazerCamelImage from "@/assets/col-modern-blazer-camel.jpg";
+import abayaRoseImage from "@/assets/abayarose.jpg";
+import modernRobeSaugeImage from "@/assets/col-modern-robe-sauge.jpg";
+import pantalonLargeImage from "@/assets/pantalonlarge.jpg";
+import product3Image from "@/assets/product-3.jpg";
+import colMenJalabaImage from "@/assets/col-men-jalaba.jpg";
+import hommeModerneImage from "@/assets/homme_moderne.jpg";
 import { products, collections } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
 const collectionImages: Record<string, string> = {
-  "femmes-voilees": collectionVeiled,
-  "femmes-modernes": collectionModern,
-  hommes: collectionMen,
+  "femmes-voilees": collectionVeiledHero,
+  "femmes-modernes": collectionModernHero,
+  hommes: collectionMenHero,
+};
+
+const collectionProductImages: Record<string, string[]> = {
+  "femmes-voilees": [modernBlazerCamelImage, collectionVeiledHero, abayaRoseImage],
+  "femmes-modernes": [modernRobeSaugeImage, product3Image, pantalonLargeImage],
+  hommes: [colMenJalabaImage, hommeModerneImage],
 };
 
 const CollectionsPage = () => {
@@ -17,7 +31,15 @@ const CollectionsPage = () => {
     <div>
       {/* Hero */}
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-secondary/20">
-        <div className="text-center px-4">
+        <motion.div
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 bg-cover bg-center pointer-events-none"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-background/60 pointer-events-none" />
+        <div className="relative z-10 text-center px-4">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -82,8 +104,14 @@ const CollectionsPage = () => {
               {/* Collection products */}
               {colProducts.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 mt-16">
-                  {colProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                  {colProducts.map((product, index) => (
+                    <ProductCard
+                      key={product.id}
+                      product={{
+                        ...product,
+                        image: collectionProductImages[col.id]?.[index] ?? product.image,
+                      }}
+                    />
                   ))}
                 </div>
               )}
